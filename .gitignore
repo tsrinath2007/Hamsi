@@ -1,0 +1,21 @@
+﻿# OS & Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Local dev server
+server.py
+test_*.py
+
+# Raw download duplicates (ignoring raw duplicate downloads to stay within Vercel free 100MB limit)
+assets/music/*NaaSongs*.mp3
+assets/music/*Full Video Song*.mp3
+assets/music/stream.mp3
+assets/memories/WhatsApp*

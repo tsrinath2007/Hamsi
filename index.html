@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday! 🎧❤️ — To My Favourite Human</title>
+  <meta name="description" content="A handwritten interactive scrapbook birthday letter for my favourite human & certified Anirudh addict.">
+
+  <!-- Google Fonts: Handwritten & Organic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Kalam:wght@300;400;700&family=Patrick+Hand&family=Reenie+Beanie&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="scrapbook-body">
+
+  <!-- HTML5 Native Audio Element for Locally Hosted Soundtrack -->
+  <audio id="audioPlayer" preload="metadata"></audio>
+
+  <!-- Floating Background Ambient Music Notes & Stars Container -->
+  <div id="ambient-particles" aria-hidden="true"></div>
+
+  <!-- Notification Toast for Audio Source / Soundtrack Status -->
+  <div id="soundtrack-status-toast" class="soundtrack-toast hidden" role="status" aria-live="polite">
+    <span class="toast-icon">🎧</span>
+    <div class="toast-body">
+      <strong id="toast-title">Add your soundtrack 🎧</strong>
+      <span id="toast-desc">Place MP3s in assets/music/ or enjoy our built-in ambient melody!</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       1. OPENING SCREEN (Envelope & Intro with Hand-Drawn Music Player)
+       ============================================================ -->
+  <section id="opening-screen" class="opening-section">
+    <div class="envelope-wrapper">
+      
+      <!-- Envelope Flap & Paper Texture Header -->
+      <div class="envelope-tape tape-top-center"></div>
+      
+      <div class="opening-content-card paper-texture">
+        <!-- Stamp & Airmail Marks -->
+        <div class="scrapbook-stamp">
+          <svg class="stamp-icon" viewBox="0 0 60 60">
+            <rect x="4" y="4" width="52" height="52" fill="none" stroke="#e63946" stroke-width="2" stroke-dasharray="4 2" rx="4"/>
+            <path d="M15 30 Q30 15 45 30 T55 35" fill="none" stroke="#ffb7b2" stroke-width="2"/>
+            <text x="30" y="38" font-family="'Patrick Hand', cursive" font-size="11" fill="#e63946" text-anchor="middle">AIR MAIL ✈️</text>
+            <text x="30" y="49" font-family="'Patrick Hand', cursive" font-size="8" fill="#555" text-anchor="middle">SPECIAL DELIVERY</text>
+          </svg>
+        </div>
+
+        <!-- Handwritten Title -->
+        <div class="title-container">
+          <span class="doodle-headphone-mini">
+            <svg viewBox="0 0 40 40" width="36" height="36">
+              <path d="M8 25 C8 14 14 8 20 8 C26 8 32 14 32 25" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="5" y="22" width="6" height="12" rx="3" fill="#ffb7b2" stroke="#222" stroke-width="2"/>
+              <rect x="29" y="22" width="6" height="12" rx="3" fill="#ffb7b2" stroke="#222" stroke-width="2"/>
+              <path d="M12 16 Q20 12 28 16" fill="none" stroke="#222" stroke-width="1.2" stroke-dasharray="2 2"/>
+            </svg>
+          </span>
+          <h1 id="typewriter-title" class="handwritten-title">
+            To my favourite human &amp;<br>
+            <span class="highlight-text">certified Anirudh addict 🎧❤️</span>
+          </h1>
+        </div>
+
+        <!-- Opening Headphones Prompt -->
+        <div class="headphones-notice-box">
+          <p class="headphones-notice">
+            Before you read this...<br>
+            <span class="highlight-underline">put your headphones on. 🎧</span>
+          </p>
+          <div class="anirudh-on-repeat-badge">
+            <span class="live-dot"></span>
+            ANIRUDH ON REPEAT
+          </div>
+        </div>
+
+        <!-- Hand-Drawn Music Player Card (Internal HTML5 Player) -->
+        <div class="doodle-player-box">
+          <div class="player-inner">
+            
+            <!-- Vinyl / CD Animation Doodle -->
+            <div class="vinyl-container">
+              <div class="vinyl-disk" id="opening-vinyl">
+                <div class="vinyl-groove groove-1"></div>
+                <div class="vinyl-groove groove-2"></div>
+                <div class="vinyl-center">
+                  <div class="vinyl-hole"></div>
+                </div>
+              </div>
+              <div class="vinyl-tonearm">
+                <svg viewBox="0 0 50 70" width="35" height="50">
+                  <path d="M10 10 L30 12 L38 45 L32 52" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="10" cy="10" r="4" fill="#ffb7b2" stroke="#222" stroke-width="2"/>
+                  <rect x="29" y="50" width="8" height="6" rx="1" fill="#e63946" stroke="#222" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Player Track Info & Controls -->
+            <div class="player-controls-area">
+              <div class="player-track-info">
+                <span class="playing-badge" id="player-badge">INTERNAL PLAYER 🎧</span>
+                <h3 class="track-name" id="opening-track-title">Gaali Vaaluga</h3>
+                <p class="track-artist" id="opening-track-movie">Agnyaathavaasi • Anirudh Ravichander</p>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="doodle-progress-wrapper">
+                <span class="time-label" id="current-time">0:00</span>
+                <div class="doodle-progress-bar" id="progress-bar-container">
+                  <div class="doodle-progress-fill" id="progress-fill"></div>
+                  <div class="doodle-progress-knob" id="progress-knob"></div>
+                </div>
+                <span class="time-label" id="total-time">3:42</span>
+              </div>
+
+              <!-- Control Buttons -->
+              <div class="player-buttons-row">
+                <button class="doodle-btn-icon" id="btn-prev" aria-label="Previous Track" title="Previous Track">
+                  <svg viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M6 5 L6 19 M18 5 L8 12 L18 19 Z" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+
+                <button class="doodle-btn-play" id="btn-play-pause" aria-label="Play or Pause" title="Play / Pause">
+                  <svg class="play-icon" viewBox="0 0 24 24" width="26" height="26">
+                    <polygon points="7,4 20,12 7,20" fill="#222" stroke="#222" stroke-width="1.5" stroke-linejoin="round"/>
+                  </svg>
+                  <svg class="pause-icon hidden" viewBox="0 0 24 24" width="26" height="26">
+                    <rect x="6" y="4" width="4" height="16" rx="1" fill="#222"/>
+                    <rect x="14" y="4" width="4" height="16" rx="1" fill="#222"/>
+                  </svg>
+                </button>
+
+                <button class="doodle-btn-icon" id="btn-next" aria-label="Next Track" title="Next Track">
+                  <svg viewBox="0 0 24 24" width="22" height="22">
+                    <path d="M18 5 L18 19 M6 5 L16 12 L6 19 Z" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+
+                <!-- Volume Slider -->
+                <div class="volume-container">
+                  <svg viewBox="0 0 24 24" width="18" height="18" class="vol-icon">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="#222"/>
+                  </svg>
+                  <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.8" class="doodle-slider" aria-label="Volume">
+                </div>
+              </div>
+
+              <div class="audio-mode-hint" id="audio-mode-hint">
+                <span>🎵 100% inside this website • Zero external apps</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Handwritten Warning Note pinned with doodle tape -->
+        <div class="warning-postit paper-texture-yellow">
+          <div class="tape-strip tape-yellow-top"></div>
+          <p class="warning-text">
+            <strong>Warning:</strong> Side effects may include smiling, crying,
+            remembering stupid memories and listening to Anirudh
+            for the next 3 hours. 💀
+          </p>
+        </div>
+
+        <!-- Prominent [ ▶ PLAY ] Button to Begin Soundtrack & Unfold Letter -->
+        <div class="open-letter-action">
+          <button id="btn-open-letter" class="doodle-btn-primary btn-play-enter" title="Press Play to begin music and open letter">
+            <span class="play-arrow-symbol">▶</span>
+            <span class="play-text">PLAY</span>
+          </button>
+          <p class="action-subtext">Press PLAY to begin our soundtrack &amp; unfold your letter</p>
+        </div>
+
+        <!-- Little doodle accents -->
+        <div class="doodle-corner top-left">✨</div>
+        <div class="doodle-corner bottom-right">🎵</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       MAIN CONTENT CONTAINER (Revealed after clicking open)
+       ============================================================ -->
+  <main id="letter-journey" class="letter-journey">
+
+    <!-- ============================================================
+         2. THE LETTER (Realistic A4 Paper Sheet Simulation)
+         ============================================================ -->
+    <section id="a4-letter-section" class="a4-letter-section">
+      
+      <!-- Side Note 1: Floating Washi Tape Note -->
+      <aside class="side-note note-1 washi-taped-left" aria-label="Side note">
+        <div class="tape-washi tape-pink"></div>
+        <p>Good friends.<br>Better songs.<br>Best memories. ❤️</p>
+      </aside>
+
+      <!-- Side Note 2: Floating Washi Tape Note -->
+      <aside class="side-note note-2 washi-taped-right" aria-label="Side note">
+        <div class="tape-washi tape-blue"></div>
+        <p>Life is better with good music. 🎧✨</p>
+      </aside>
+
+      <!-- The A4 Paper Canvas -->
+      <article class="a4-paper paper-texture shadow-scrapbook" id="a4-sheet">
+        <!-- Paper Corner Fold Effect -->
+        <div class="corner-fold"></div>
+        
+        <!-- Subtle Notebook Left Margin Line -->
+        <div class="margin-line" aria-hidden="true"></div>
+
+        <!-- Decorative Tape on Top of A4 Sheet -->
+        <div class="tape-washi tape-top-a4"></div>
+
+        <!-- Letter Header -->
+        <header class="letter-header">
+          <div class="date-doodle">
+            <span class="handwritten-meta">For your special day • Forever &amp; always</span>
+          </div>
+          <h2 class="letter-top-heading">
+            To my favourite human &amp; certified Anirudh addict 🎧
+          </h2>
+          <div class="divider-doodle">
+            <svg viewBox="0 0 300 20" width="100%" height="20" preserveAspectRatio="none">
+              <path d="M5 10 Q75 3 150 10 T295 10" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M140 5 Q150 0 160 5 T170 10" fill="none" stroke="#ffb7b2" stroke-width="2"/>
+            </svg>
+          </div>
+        </header>
+
+        <!-- Exact Required Letter Paragraphs with Pink Highlighter & Doodles -->
+        <div class="letter-body">
+
+          <!-- Paragraph 1 -->
+          <div class="letter-paragraph">
+            <p class="lyric-quote">“Oh my baby…” ❤️</p>
+          </div>
+
+          <!-- Paragraph 2 -->
+          <div class="letter-paragraph">
+            <p class="lyric-quote">“Gaali vaaluga…”</p>
+          </div>
+
+          <!-- Paragraph 3 with Pink Highlighter Stroke -->
+          <div class="letter-paragraph">
+            <p class="prose-text">
+              Somewhere between all the songs, random fights, stupid jokes and endless conversations, 
+              <mark class="pink-highlighter">you became one of those people I genuinely can't imagine my life without.</mark>
+            </p>
+          </div>
+
+          <!-- Margin Doodle: Headphones & Music Note -->
+          <div class="body-doodle doodle-inline-music">
+            <svg viewBox="0 0 100 40" width="80" height="32">
+              <path d="M10 28 C10 15 20 8 30 8 C40 8 50 15 50 28" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="10" cy="28" r="5" fill="#ffccd5" stroke="#222" stroke-width="1.5"/>
+              <circle cx="50" cy="28" r="5" fill="#ffccd5" stroke="#222" stroke-width="1.5"/>
+              <!-- Note -->
+              <path d="M70 30 C70 30 65 28 65 24 C65 20 70 18 75 22 L75 5 L90 2 L90 18" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <ellipse cx="68" cy="24" rx="5" ry="3.5" fill="#222"/>
+              <ellipse cx="85" cy="18" rx="5" ry="3.5" fill="#222"/>
+            </svg>
+          </div>
+
+          <!-- Paragraph 4 -->
+          <div class="letter-paragraph">
+            <p class="lyric-quote">“Arere yekkada…”</p>
+          </div>
+
+          <!-- Paragraph 5 -->
+          <div class="letter-paragraph">
+            <p class="prose-text">
+              I don't know exactly when you went from just another person I knew to <span class="handwritten-bold">my person</span>, but I'm really glad it happened.
+            </p>
+          </div>
+
+          <!-- Paragraph 6 -->
+          <div class="letter-paragraph">
+            <p class="lyric-quote">“Inkem inkem inkem kaavaale…”</p>
+          </div>
+
+          <!-- Paragraph 7 with Pink Highlighter -->
+          <div class="letter-paragraph">
+            <p class="prose-text">
+              Honestly, for your birthday, I don't need to wish you for everything in the world. 
+              <mark class="pink-highlighter">I just want you to have the kind of year that gives you reasons to smile for no reason, laugh until your stomach hurts, and make memories you'll replay years later.</mark>
+            </p>
+          </div>
+
+          <!-- Paragraph 8 -->
+          <div class="letter-paragraph paragraph-punchline">
+            <p class="prose-text">And obviously…</p>
+            <p class="quote-punchline">
+              <mark class="pink-highlighter-bold">"Anirudh must be playing in the background." 😭🎶</mark>
+            </p>
+          </div>
+
+          <!-- Hand-drawn Paper Airplane Doodle -->
+          <div class="letter-airplane-doodle">
+            <svg viewBox="0 0 120 60" width="100" height="50">
+              <path d="M5 45 Q30 42 55 35 T95 20" fill="none" stroke="#ffb7b2" stroke-width="1.8" stroke-dasharray="3 3"/>
+              <!-- Airplane -->
+              <polygon points="95,20 118,5 105,32 98,22" fill="#fff" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+              <polygon points="105,32 118,5 110,24" fill="#ffccd5" stroke="#222" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M98 22 L110 24" stroke="#222" stroke-width="1.5"/>
+            </svg>
+          </div>
+
+        </div>
+
+        <!-- Handwritten Footer inside A4 paper -->
+        <footer class="letter-paper-footer">
+          <span class="page-number">page 1 of 1 • kept forever</span>
+          <span class="doodle-heart-small">❤️</span>
+        </footer>
+
+      </article>
+
+      <!-- Side Note 3: Floating right side sticky note -->
+      <aside class="side-note note-3 washi-taped-left" aria-label="Side note">
+        <div class="tape-washi tape-yellow"></div>
+        <p>Same energy, always. ⚡</p>
+      </aside>
+
+    </section>
+
+
+    <!-- ============================================================
+         3. ANIRUDH MUSIC SECTION ("THE SOUNDTRACK OF YOU 🎧")
+         ============================================================ -->
+    <section id="soundtrack-section" class="soundtrack-section">
+      
+      <div class="section-title-wrap">
+        <div class="section-doodle-sparkle">✨ 🎧 ✨</div>
+        <h2 class="section-heading handwritten-heading">
+          THE SOUNDTRACK OF YOU 🎧
+        </h2>
+        <p class="section-subtitle handwritten-sub">
+          Different songs. Different moods.<br>
+          But somehow, every song reminds me of a different version of you.
+        </p>
+      </div>
+
+      <!-- Side Note 4 -->
+      <div class="floating-inline-note note-center-doodle">
+        <span class="tape-pin">📌</span>
+        <em>“Every song somehow reminds me of a different version of you.”</em>
+      </div>
+
+      <!-- 7 Interactive Song Cards Grid (All Native In-Page Playback) -->
+      <div class="songs-grid" id="songs-grid">
+        
+        <!-- Card 1: Gaali Vaaluga -->
+        <div class="song-card paper-texture" data-song-id="gaali" data-title="Gaali Vaaluga" data-movie="Agnyaathavaasi" data-artist="Anirudh Ravichander" data-file="assets/music/gaali-vaaluga.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Gentle Breeze & Paper Plane SVG -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <path d="M6 25 Q20 18 36 24 T55 20" fill="none" stroke="#bae6fd" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M12 35 Q28 28 42 36 T58 32" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Airplane -->
+              <polygon points="18,12 38,5 26,22 22,15" fill="#fff" stroke="#222" stroke-width="1.6" stroke-linejoin="round"/>
+              <!-- Clef / Note -->
+              <circle cx="48" cy="14" r="3" fill="#ffb7b2" stroke="#222" stroke-width="1.2"/>
+              <line x1="51" y1="14" x2="51" y2="4" stroke="#222" stroke-width="1.5"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Gaali Vaaluga</h3>
+            <p class="card-movie-name">Movie: Agnyaathavaasi</p>
+            <span class="card-vibe-tag">🍃 Pure Anirudh Magic</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Gaali Vaaluga">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Aaya Sher -->
+        <div class="song-card paper-texture" data-song-id="aayasher" data-title="Aaya Sher" data-movie="The Paradise" data-artist="Anirudh Ravichander" data-file="assets/music/aaya-sher.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Lion Crown & Fiery Energy SVG Doodle -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <path d="M12 30 C12 18 20 12 30 12 C40 12 48 18 48 30 C48 42 40 48 30 48 C20 48 12 42 12 30 Z" fill="#fef08a" stroke="#222" stroke-width="2"/>
+              <!-- Crown / Mane -->
+              <path d="M16 18 L22 24 L30 14 L38 24 L44 18" fill="none" stroke="#e63946" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="23" cy="28" r="3" fill="#222"/>
+              <circle cx="37" cy="28" r="3" fill="#222"/>
+              <path d="M26 36 Q30 40 34 36" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <!-- Sparks -->
+              <path d="M6 10 L10 16 M54 10 L50 16" stroke="#e63946" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Aaya Sher</h3>
+            <p class="card-movie-name">Movie: The Paradise</p>
+            <span class="card-vibe-tag">🔥 Pure Anirudh Addiction</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Aaya Sher">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Pilla -->
+        <div class="song-card paper-texture" data-song-id="pilla" data-title="Pilla" data-movie="Agnyaathavaasi" data-artist="Anirudh Ravichander" data-file="assets/music/pilla.mp3">
+          <div class="tape-card-corner"></div>
+          
+          <div class="card-doodle-icon">
+            <!-- Acoustic Guitar & Stars SVG Doodle -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <path d="M15 48 C10 40 12 32 20 28 C24 26 27 28 30 25 L45 10 L50 15 L35 30 C32 33 34 36 32 40 C28 48 20 50 15 48 Z" fill="#ffccd5" stroke="#222" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="24" cy="36" r="4" fill="#fff" stroke="#222" stroke-width="1.5"/>
+              <line x1="24" y1="36" x2="48" y2="12" stroke="#222" stroke-width="1.2"/>
+              <!-- Stars -->
+              <path d="M48 35 L50 40 L55 42 L50 44 L48 49 L46 44 L41 42 L46 40 Z" fill="#fef08a" stroke="#222" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Pilla</h3>
+            <p class="card-movie-name">Movie: Agnyaathavaasi</p>
+            <span class="card-vibe-tag">✨ Carefree &amp; Vibing</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Pilla">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Kadalalle -->
+        <div class="song-card paper-texture" data-song-id="kadalalle" data-title="Kadalalle" data-movie="Dear Comrade" data-artist="Justin Prabhakaran • Sid Sriram" data-file="assets/music/kadalalle.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Ocean Waves & Heart Doodles SVG -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <path d="M5 45 C15 38 25 50 35 42 C45 35 55 45 60 40" fill="none" stroke="#bae6fd" stroke-width="3" stroke-linecap="round"/>
+              <path d="M5 35 C15 28 25 40 35 32 C45 25 55 35 60 30" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <!-- Heart floating -->
+              <path d="M30 18 C26 10 16 12 18 20 C20 25 30 30 30 30 C30 30 40 25 42 20 C44 12 34 10 30 18 Z" fill="#ffb7b2" stroke="#222" stroke-width="1.6"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Kadalalle</h3>
+            <p class="card-movie-name">Movie: Dear Comrade</p>
+            <span class="card-vibe-tag">🌊 Deep &amp; Pure Soul</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Kadalalle">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Priyathama -->
+        <div class="song-card paper-texture" data-song-id="priyathama" data-title="Priyathama" data-movie="Majili" data-artist="Gopi Sundar • Chinmayi Sripaada" data-file="assets/music/priyathama.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Cassette & Heart SVG Doodle -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <rect x="8" y="14" width="44" height="32" rx="4" fill="#fff" stroke="#222" stroke-width="2"/>
+              <rect x="14" y="20" width="32" height="18" rx="2" fill="#ffccd5" stroke="#222" stroke-width="1.5"/>
+              <circle cx="23" cy="29" r="4" fill="#222"/>
+              <circle cx="37" cy="29" r="4" fill="#222"/>
+              <line x1="23" y1="29" x2="37" y2="29" stroke="#fff" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <!-- Heart small -->
+              <path d="M48 10 C46 6 42 7 43 11 C44 13 48 16 48 16 C48 16 52 13 53 11 C54 7 50 6 48 10 Z" fill="#e63946" stroke="#222" stroke-width="1"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Priyathama</h3>
+            <p class="card-movie-name">Movie: Majili</p>
+            <span class="card-vibe-tag">🥹 Pure Emotional Nostalgia</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Priyathama">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Inkem Inkem Inkem Kaavaale -->
+        <div class="song-card paper-texture" data-song-id="inkem" data-title="Inkem Inkem Inkem Kaavaale" data-movie="Geetha Govindam" data-artist="Gopi Sundar • Sid Sriram" data-file="assets/music/inkem-inkem.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Vintage Radio & Music Notes SVG -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <!-- Antenna -->
+              <line x1="16" y1="18" x2="10" y2="6" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="10" cy="6" r="2" fill="#ffb7b2"/>
+              <!-- Radio box -->
+              <rect x="10" y="18" width="42" height="30" rx="4" fill="#fef08a" stroke="#222" stroke-width="2"/>
+              <circle cx="24" cy="33" r="8" fill="#fff" stroke="#222" stroke-width="1.8"/>
+              <circle cx="24" cy="33" r="2.5" fill="#222"/>
+              <!-- Radio lines -->
+              <line x1="37" y1="26" x2="47" y2="26" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <line x1="37" y1="32" x2="47" y2="32" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <line x1="37" y1="38" x2="44" y2="38" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Inkem Inkem Inkem Kaavaale</h3>
+            <p class="card-movie-name">Movie: Geetha Govindam</p>
+            <span class="card-vibe-tag">❤️ Endless Gratitude</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Inkem Inkem">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Oh My Baby -->
+        <div class="song-card paper-texture" data-song-id="ohmybaby" data-title="Oh My Baby" data-movie="Guntur Kaaram" data-artist="Thaman S • Shilpa Rao" data-file="assets/music/oh-my-baby.mp3">
+          <div class="tape-card-corner"></div>
+
+          <div class="card-doodle-icon">
+            <!-- Headphones & Soundwave SVG Doodle -->
+            <svg viewBox="0 0 60 60" width="48" height="48">
+              <path d="M12 38 C12 22 20 14 30 14 C40 14 48 22 48 38" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="8" y="32" width="8" height="16" rx="4" fill="#ffb7b2" stroke="#222" stroke-width="2"/>
+              <rect x="44" y="32" width="8" height="16" rx="4" fill="#ffb7b2" stroke="#222" stroke-width="2"/>
+              <!-- Soundwave heart -->
+              <path d="M22 34 L26 28 L30 38 L34 30 L38 34" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <div class="song-details">
+            <h3 class="card-song-title">Oh My Baby</h3>
+            <p class="card-movie-name">Movie: Guntur Kaaram</p>
+            <span class="card-vibe-tag">🎧 Catchy &amp; Addictive</span>
+          </div>
+
+          <div class="card-actions">
+            <button class="card-play-btn" title="Play Track" aria-label="Play Oh My Baby">
+              <svg viewBox="0 0 24 24" width="16" height="16" class="play-svg"><polygon points="6,4 19,12 6,20" fill="currentColor"/></svg>
+              <span>Play Track</span>
+            </button>
+            <div class="equalizer-bars" aria-hidden="true">
+              <span class="eq-bar bar-1"></span>
+              <span class="eq-bar bar-2"></span>
+              <span class="eq-bar bar-3"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Side Note 5 -->
+      <aside class="side-note note-5 washi-taped-right">
+        <div class="tape-washi tape-pink"></div>
+        <p>Music + you = perfect days. 🎵✨</p>
+      </aside>
+
+    </section>
+
+
+    <!-- ============================================================
+         4. "DIFFERENT VERSIONS OF YOU" (Doodle Cards Section)
+         ============================================================ -->
+    <section id="versions-section" class="versions-section">
+      
+      <div class="section-title-wrap">
+        <h2 class="section-heading handwritten-heading">
+          Different songs. Different moods.<br>
+          <span class="highlight-text-alt">Different versions of YOU.</span>
+        </h2>
+      </div>
+
+      <!-- 4 Hand-drawn Scrapbook Cards -->
+      <div class="versions-grid">
+        
+        <!-- Card 1 -->
+        <div class="version-card paper-texture card-tilt-1" data-scroll-reveal>
+          <div class="pin-icon">📍</div>
+          <div class="version-emoji">❤️</div>
+          <h3 class="version-text">The crazy you.</h3>
+          <p class="version-sub">Random 2 AM plans, unhinged laughter, zero filter.</p>
+          <div class="version-doodle">
+            <svg viewBox="0 0 60 20" width="50" height="18">
+              <path d="M5 10 Q15 2 25 10 T45 10" fill="none" stroke="#e63946" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="version-card paper-texture card-tilt-2" data-scroll-reveal>
+          <div class="pin-icon">📎</div>
+          <div class="version-emoji">💀</div>
+          <h3 class="version-text">The annoying you.</h3>
+          <p class="version-sub">Arguing over petty things, sending reels at 3 AM.</p>
+          <div class="version-doodle">
+            <svg viewBox="0 0 60 20" width="50" height="18">
+              <path d="M5 15 L20 5 L35 15 L50 5" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="version-card paper-texture card-tilt-3" data-scroll-reveal>
+          <div class="pin-icon">📍</div>
+          <div class="version-emoji">🥹</div>
+          <h3 class="version-text">The emotional you.</h3>
+          <p class="version-sub">Deep heart-to-hearts, always checking in, pure empathy.</p>
+          <div class="version-doodle">
+            <svg viewBox="0 0 60 20" width="50" height="18">
+              <path d="M10 10 Q30 0 50 10" fill="none" stroke="#ffb7b2" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="version-card paper-texture card-tilt-4" data-scroll-reveal>
+          <div class="pin-icon">🎧</div>
+          <div class="version-emoji">⚡</div>
+          <h3 class="version-text">The &ldquo;BRO LISTEN TO THIS ANIRUDH SONG&rdquo; you.</h3>
+          <p class="version-sub">Headphones on full blast, screaming every single lyric.</p>
+          <div class="version-doodle">
+            <svg viewBox="0 0 60 20" width="50" height="18">
+              <circle cx="20" cy="10" r="3" fill="#222"/>
+              <circle cx="40" cy="10" r="3" fill="#222"/>
+              <path d="M20 10 L40 10" stroke="#222" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="versions-footer-note">
+        <p class="handwritten-bold-large">
+          “And I wouldn't trade any of them.”
+        </p>
+      </div>
+
+      <!-- Side Note 6 -->
+      <aside class="side-note note-6 washi-taped-left">
+        <div class="tape-washi tape-yellow"></div>
+        <p>More songs. More adventures. 🚀</p>
+      </aside>
+
+    </section>
+
+
+    <!-- ============================================================
+         4B. OUR MEMORIES & CHAOS (Polaroid Scrapbook Gallery)
+         Dynamically populated from the single MEDIA array in js/memories.js
+         ============================================================ -->
+    <section id="memories-section" class="memories-section">
+      
+      <div class="section-title-wrap">
+        <div class="section-doodle-sparkle">📸 🎞️ ✨</div>
+        <h2 class="section-heading handwritten-heading">
+          OUR MEMORIES &amp; CHAOS 📸
+        </h2>
+        <p class="section-subtitle handwritten-sub">
+          Core memories, questionable decisions, and evidence we were never normal.
+        </p>
+      </div>
+
+      <!-- Dynamic Scrapbook Polaroid Container -->
+      <div class="memories-gallery-grid" id="memories-gallery">
+        <!-- Rendered automatically from the MEDIA array in js/memories.js -->
+      </div>
+
+    </section>
+
+
+    <!-- ============================================================
+         5. BIRTHDAY MESSAGE (Emotional Centerpiece with Confetti)
+         ============================================================ -->
+    <section id="birthday-centerpiece" class="birthday-centerpiece-section">
+      
+      <!-- Centerpiece A4 Scrapbook Page -->
+      <div class="centerpiece-card paper-texture shadow-scrapbook" id="centerpiece-target">
+        
+        <!-- Cloud & Star Doodles at Top -->
+        <div class="centerpiece-top-doodles" aria-hidden="true">
+          <svg viewBox="0 0 100 50" width="80" height="40" class="doodle-cloud">
+            <path d="M15 35 Q10 25 22 22 Q25 10 40 12 Q52 6 62 16 Q75 14 78 28 Q88 32 80 40 Z" fill="#fff" stroke="#222" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+          <span class="doodle-star sparkle-1">✨</span>
+          <span class="doodle-star sparkle-2">★</span>
+          <span class="doodle-star sparkle-3">✨</span>
+        </div>
+
+        <h2 class="birthday-main-heading handwritten-heading">
+          Happy Birthday, bestie. ❤️
+        </h2>
+
+        <div class="birthday-paragraphs">
+          <p class="birthday-passage">
+            Here's to another year of us being completely unserious,
+            making questionable decisions, collecting stupid memories
+            and pretending we're normal.
+          </p>
+
+          <div class="stay-exact-highlight-box">
+            <svg class="handdrawn-box-border" viewBox="0 0 360 80" preserveAspectRatio="none">
+              <path d="M8 12 Q180 5 352 10 Q358 40 350 70 Q180 76 10 72 Q3 40 8 12 Z" fill="#fff8f9" stroke="#e63946" stroke-width="2.2" stroke-dasharray="8 3" stroke-linecap="round"/>
+            </svg>
+            <p class="highlight-stay">
+              Stay exactly the way you are. ❤️
+            </p>
+          </div>
+        </div>
+
+        <!-- Doodles Surrounding Message: Hearts, Stars, Music Notes, Headphones, Paper Airplane -->
+        <div class="doodles-constellation">
+          <span class="floating-doodle d-heart">❤️</span>
+          <span class="floating-doodle d-headphones">🎧</span>
+          <span class="floating-doodle d-note-1">🎵</span>
+          <span class="floating-doodle d-plane">✈️</span>
+          <span class="floating-doodle d-note-2">🎶</span>
+          <span class="floating-doodle d-star">✨</span>
+        </div>
+
+        <!-- Confetti Trigger Button (optional manual click for fun) -->
+        <div class="confetti-button-wrap">
+          <button id="btn-confetti-party" class="doodle-btn-confetti" title="Click for extra birthday confetti!">
+            <span>🎉 Tap for more confetti!</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Side Note 7 -->
+      <aside class="side-note note-7 washi-taped-right">
+        <div class="tape-washi tape-blue"></div>
+        <p>Stupid memories forever. ♾️❤️</p>
+      </aside>
+
+    </section>
+
+
+    <!-- ============================================================
+         6. FINAL SECTION (Warm Scrapbook Ending)
+         ============================================================ -->
+    <section id="final-section" class="final-section">
+      
+      <div class="final-scrapbook-card dark-paper-texture">
+        <div class="tape-washi tape-top-center tape-dark"></div>
+
+        <div class="final-content">
+          <p class="final-callout-1">
+            Now go play Anirudh at full volume. 🎧
+          </p>
+          <p class="final-callout-2">
+            It's literally your birthday.
+          </p>
+
+          <div class="final-signoff">
+            <p class="signoff-withlove">With love,</p>
+            <p class="signoff-always">Always ❤️</p>
+          </div>
+
+          <!-- Big Hand-Drawn SVG Heart -->
+          <div class="big-doodle-heart-container">
+            <svg viewBox="0 0 100 95" width="90" height="85" class="big-pulsing-heart">
+              <path d="M50 85 C15 55 2 35 12 18 C22 2 42 8 50 25 C58 8 78 2 88 18 C98 35 85 55 50 85 Z" fill="#e63946" stroke="#222" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M22 20 Q30 14 38 22" fill="none" stroke="#ffccd5" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Replay Our Soundtrack Button -->
+          <div class="replay-action-wrap">
+            <button id="btn-replay-soundtrack" class="doodle-btn-replay">
+              <span>Replay our soundtrack 🎵</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="final-card-footer">
+          <span>made with all my heart for your birthday</span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ============================================================
+       7. PERSISTENT MINI-PLAYER (Bottom Screen Sticky Bar)
+       ============================================================ -->
+  <aside id="persistent-mini-player" class="mini-player-bar paper-texture" aria-label="Music Player Bar">
+    <div class="mini-player-inner">
+      
+      <!-- Song Doodle / Thumbnail -->
+      <div class="mini-track-media">
+        <div class="mini-doodle-icon" id="mini-doodle-display">
+          <!-- Animated rotating CD -->
+          <div class="mini-spinning-cd" id="mini-spinning-cd">
+            <div class="mini-cd-center"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Track Name & Artist / Movie -->
+      <div class="mini-track-meta">
+        <span class="mini-song-name" id="mini-song-name">Gaali Vaaluga</span>
+        <span class="mini-artist-movie" id="mini-artist-movie">Agnyaathavaasi • Anirudh</span>
+      </div>
+
+      <!-- Mini Progress & Time on medium+ screens -->
+      <div class="mini-progress-container">
+        <span class="mini-time-label" id="mini-current-time">0:00</span>
+        <div class="mini-progress-bar" id="mini-progress-bar">
+          <div class="mini-progress-fill" id="mini-progress-fill"></div>
+        </div>
+        <span class="mini-time-label" id="mini-total-time">3:42</span>
+      </div>
+
+      <!-- Controls: Prev, Play/Pause, Next -->
+      <div class="mini-controls">
+        <button class="mini-btn-prev" id="mini-btn-prev" aria-label="Previous Track" title="Previous Track">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path d="M6 6 L6 18 M18 6 L8 12 L18 18 Z" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="mini-btn-play" id="mini-btn-play" aria-label="Play or Pause" title="Play / Pause">
+          <svg class="mini-play-icon" viewBox="0 0 24 24" width="20" height="20">
+            <polygon points="7,4 19,12 7,20" fill="#222"/>
+          </svg>
+          <svg class="mini-pause-icon hidden" viewBox="0 0 24 24" width="20" height="20">
+            <rect x="6" y="4" width="4" height="16" rx="1" fill="#222"/>
+            <rect x="14" y="4" width="4" height="16" rx="1" fill="#222"/>
+          </svg>
+        </button>
+
+        <button class="mini-btn-next" id="mini-btn-next" aria-label="Next Track" title="Next Track">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path d="M18 6 L18 18 M6 6 L16 12 L6 18 Z" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Audio Mode Tag (shows LOCAL AUDIO or AMBIENT) -->
+      <div class="mini-mode-tag" id="mini-mode-tag" title="Music Source">
+        <span class="tag-icon">🎧</span>
+        <span class="tag-text" id="mini-tag-text">SOUNDTRACK</span>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Lightbox Modal for Photo / Video Scrapbook View -->
+  <div id="memories-lightbox" class="lightbox-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="lightbox-card paper-texture">
+      <button class="lightbox-close-btn" id="lightbox-close" aria-label="Close modal">✕</button>
+      <button class="lightbox-nav-btn lightbox-prev-btn" id="lightbox-prev" aria-label="Previous Memory" title="Previous">❮</button>
+      <button class="lightbox-nav-btn lightbox-next-btn" id="lightbox-next" aria-label="Next Memory" title="Next">❯</button>
+      <div class="lightbox-media-container" id="lightbox-media-container"></div>
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/doodles.js"></script>
+  <script src="js/music-player.js"></script>
+  <script src="js/memories.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
